@@ -1,4 +1,4 @@
-from algorithms.Prototypical_networks import PrototypicalNetworks
+from src.Prototypical_networks import PrototypicalNetworks
 import torch
 from torch import nn
 from torchvision import datasets, transforms
@@ -8,60 +8,6 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 from pathlib import Path
 from wrap_few_shot_dataset import WrapFewShotDataset
-
-image_size = 28
-
-# Setup path to data folder
-data_path = Path("data")
-image_path = data_path / "UCMerced-Test"
-
-# Check if image folder exists
-if image_path.is_dir():
-    print(f"{image_path} directory exists.")
-else:
-    print(f"Did not find {image_path} directory")
-    exit()
-
-# Setup train and testing paths
-test_dir = image_path / "Test"
-
-test_transform = transforms.Compose([
-    transforms.Resize([int(image_size * 1.15), int(image_size * 1.15)]),
-    transforms.CenterCrop(image_size),
-    transforms.ToTensor()
-])
-
-test_set = datasets.ImageFolder(
-    root=test_dir,
-    transform=test_transform,
-)
-
-test_set = WrapFewShotDataset(test_set)
-
-convolutional_network = resnet18(pretrained=True)
-convolutional_network.fc = nn.Flatten()
-model = PrototypicalNetworks(convolutional_network)
-model.load_state_dict(torch.load("models/fewshot_merced_proto.pth",map_location=torch.device('cpu')))
-
-
-N_WAY = 5  # Number of classes in a task
-N_SHOT = 5  # Number of images per class in the support set
-N_QUERY = 10  # Number of images per class in the query set
-N_EVALUATION_TASKS = 100
-
-test_sampler = FewShotSampler (
-    test_set, n_way=N_WAY, n_shot=N_SHOT, n_query=N_QUERY, n_tasks=N_EVALUATION_TASKS
-)
-
-test_loader = DataLoader(
-    test_set,
-    batch_sampler=test_sampler,
-    num_workers=8,
-    pin_memory=True,
-    collate_fn=test_sampler.episodic_collate_fn,
-)
-
-model.eval()
 
 def evaluate_on_one_task(
     support_images: torch.Tensor,
@@ -91,6 +37,7 @@ def evaluate(data_loader: DataLoader):
     # eval mode affects the behaviour of some layers (such as batch normalization or dropout)
     # no_grad() tells torch not to keep in memory the whole computational graph (it's more lightweight this way)
     model.eval()
+
     with torch.no_grad():
         for (
             support_images,
@@ -111,5 +58,59 @@ def evaluate(data_loader: DataLoader):
         f"Model tested on {len(data_loader)} tasks. Accuracy: {(100 * correct_predictions/total_predictions):.2f}%"
     )
 
+if __name__ == "__main__":
 
-evaluate(test_loader)
+    image_size = 28
+
+    # Setup path to data folder
+    data_path = Path("data")
+    image_path = data_path / "UCMerced-Test"
+
+    # Check if image folder exists
+    if image_path.is_dir():
+        print(f"{image_path} directory exists.")
+    else:
+        print(f"Did not find {image_path} directory")
+        exit()
+
+    # Setup train and testing paths
+    test_dir = image_path / "Test"
+
+    test_transform = transforms.Compose([
+        transforms.Resize([int(image_size * 1.15), int(image_size * 1.15)]),
+        transforms.CenterCrop(image_size),
+        transforms.ToTensor()
+    ])
+
+    test_set = datasets.ImageFolder(
+        root=test_dir,
+        transform=test_transform,
+    )
+
+    test_set = WrapFewShotDataset(test_set)
+
+    convolutional_network = resnet18(pretrained=True)
+    convolutional_network.fc = nn.Flatten()
+    model = PrototypicalNetworks(convolutional_network)
+    model.load_state_dict(torch.load("models/fewshot_merced_proto.pth",map_location=torch.device('cpu')))
+
+
+    N_WAY = 5  # Number of classes in a task
+    N_SHOT = 5  # Number of images per class in the support set
+    N_QUERY = 10  # Number of images per class in the query set
+    N_EVALUATION_TASKS = 100
+
+    test_sampler = FewShotSampler (
+        test_set, n_way=N_WAY, n_shot=N_SHOT, n_query=N_QUERY, n_tasks=N_EVALUATION_TASKS
+    )
+
+    test_loader = DataLoader(
+        test_set,
+        batch_sampler=test_sampler,
+        num_workers=8,
+        pin_memory=True,
+        collate_fn=test_sampler.episodic_collate_fn,
+    )
+
+    model.eval()
+    evaluate(test_loader)
