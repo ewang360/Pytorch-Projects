@@ -122,20 +122,22 @@ if __name__ == "__main__":
     model.eval()
     pred, true = get_data(test_loader)
 
-    from sklearn.metrics import confusion_matrix
-    import pandas as pd
-    import  numpy as np
-    import matplotlib.pyplot as plt
-    import seaborn as sn
+    print(pred,true)
 
-    # generate confusion matrix
-    classes = ('buildings', 'chaparral', 'denseresidential', 'intersection', 'mediumresidential',
-        'mobilehomepark', 'sparseresidential', 'storagetanks', 'tenniscourt')
+    # from sklearn.metrics import confusion_matrix
+    # import pandas as pd
+    # import  numpy as np
+    # import matplotlib.pyplot as plt
+    # import seaborn as sn
+
+    # # generate confusion matrix
+    # classes = ('buildings', 'chaparral', 'denseresidential', 'intersection', 'mediumresidential',
+    #     'mobilehomepark', 'sparseresidential', 'storagetanks', 'tenniscourt')
     
-    cf_matrix = confusion_matrix(true,pred)
-    df_cm = pd.DataFrame(cf_matrix / np.sum(cf_matrix, axis=1)[:, None], index = [i for i in classes],
-                     columns = [i for i in classes])
+    # cf_matrix = confusion_matrix(true,pred)
+    # df_cm = pd.DataFrame(cf_matrix / np.sum(cf_matrix, axis=1)[:, None], index = [i for i in classes],
+    #                  columns = [i for i in classes])
     
-    plt.figure(figsize = (12,7))
-    sn.heatmap(df_cm, annot=True)
-    plt.savefig('output.png')
+    # plt.figure(figsize = (12,7))
+    # sn.heatmap(df_cm, annot=True)
+    # plt.savefig('output.png')
