@@ -1,7 +1,8 @@
 # Import Module
 from tkinter import *
-from tkinter.ttk import *
 from PIL import Image, ImageTk
+
+classes = ["clouds","darkness"]
 
 # create root window
 root = Tk()
@@ -23,7 +24,7 @@ for i in range(12):
 	for j in range(16):
 		name = "output/River_" + str(i) + "_" + str(j) + ".png"
 		image = Image.open(name)
-		image = image.resize((64, 64))
+		image = image.resize((32,32))
 		photo = ImageTk.PhotoImage(image)
 
 		p.append(photo)
@@ -31,14 +32,14 @@ for i in range(12):
 
 		# here, image option is used to 
 		# set image on button 
-		# button.append(Button(root, text = 'Click Me !', image = photoimage).pack(side = TOP))
-		# button_border = Frame(root, highlightbackground = "green",highlightthickness = 2, bd=0) 
-		button = Button(root, text = 'Click Me !', image = photoimage)
+		button = Button(root, highlightbackground='black', image = photoimage)
 		button.grid(row=i,column=j)
 		b.append(button)
 
 Label(root, text="meh").grid()
 Entry(root).grid(row = 1,column = 16)
+
+b[0].config(highlightbackground='white')
 
 # Execute Tkinter
 root.mainloop()
