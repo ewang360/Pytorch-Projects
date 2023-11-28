@@ -1,4 +1,4 @@
-from src.Prototypical_networks import PrototypicalNetworks
+from modules.episodic_prototypical import PrototypicalNetworks
 import torch
 from torch import nn
 from torchvision import datasets, transforms
@@ -95,6 +95,8 @@ if __name__ == "__main__":
     )
 
     test_set = WrapFewShotDataset(test_set)
+
+    print("test labels: ",test_set.get_labels())
 
     convolutional_network = resnet18(pretrained=True)
     convolutional_network.fc = nn.Flatten()
