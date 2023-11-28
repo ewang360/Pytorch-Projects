@@ -45,7 +45,7 @@ def get_data(data_loader: DataLoader):
     pred = []
     true = []
 
-    device = "cpu"
+    device = "cuda"
 
     # eval mode affects the behaviour of some layers (such as batch normalization or dropout)
     # no_grad() tells torch not to keep in memory the whole computational graph (it's more lightweight this way)
@@ -123,7 +123,7 @@ if __name__ == "__main__":
     test_set = WrapFewShotDataset(test_set)
 
     # load model
-    DEVICE = "cpu"
+    DEVICE = "cuda"
 
     model = resnet12(
         use_fc=True,
@@ -132,7 +132,7 @@ if __name__ == "__main__":
 
     # model.load_state_dict(torch.load("models/fewshot_merced_simple_scratch_res.pth",map_location=torch.device('cpu')))
     model = PrototypicalNetworks(model).to(DEVICE)
-    model.load_state_dict(torch.load("models/fewshot_merced_proto_scratch.pth",map_location=torch.device('cpu')))
+    model.load_state_dict(torch.load("models/fewshot_merced_proto_scratch.pth",map_location=torch.device(DEVICE)))
 
 
     N_WAY = 5  # Number of classes in a task
@@ -173,4 +173,4 @@ if __name__ == "__main__":
     
     plt.figure(figsize = (12,7))
     sn.heatmap(df_cm, annot=True)
-    plt.savefig('proto.png')
+    plt.savefig('proto_test.png')
