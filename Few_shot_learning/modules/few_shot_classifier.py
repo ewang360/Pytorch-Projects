@@ -95,7 +95,7 @@ class FewShotClassifier(nn.Module):
             )
         return centered_features
     
-    def compute_prototypes(support_features: Tensor, support_labels: Tensor) -> Tensor:
+    def compute_prototypes(self, support_features: Tensor, support_labels: Tensor) -> Tensor:
         """
         Compute class prototypes from support features and labels
         Args:
