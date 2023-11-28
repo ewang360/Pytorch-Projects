@@ -20,6 +20,10 @@ root.title("Tile Classification")
 b = []
 p = []
 
+def click(row,col):
+	index = row*16+col
+	b[index].config(highlightbackground='yellow')
+
 for i in range(12):
 	for j in range(16):
 		name = "output/River_" + str(i) + "_" + str(j) + ".png"
@@ -32,14 +36,14 @@ for i in range(12):
 
 		# here, image option is used to 
 		# set image on button 
-		button = Button(root, highlightbackground='black', image = photoimage)
+		button = Button(root, command=lambda i=i,j=j: click(i,j), highlightbackground='black', image = photoimage)
 		button.grid(row=i,column=j)
 		b.append(button)
 
 Label(root, text="meh").grid()
 Entry(root).grid(row = 1,column = 16)
 
-b[0].config(highlightbackground='white')
+print("hi")
 
 # Execute Tkinter
 root.mainloop()
