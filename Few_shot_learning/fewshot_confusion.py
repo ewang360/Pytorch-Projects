@@ -9,6 +9,12 @@ from tqdm import tqdm
 from pathlib import Path
 from wrap_few_shot_dataset import WrapFewShotDataset
 
+from sklearn.metrics import confusion_matrix
+import pandas as pd
+import  numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sn
+
 def get_labels(
     support_images: torch.Tensor,
     support_labels: torch.Tensor,
@@ -96,8 +102,6 @@ if __name__ == "__main__":
 
     test_set = WrapFewShotDataset(test_set)
 
-    print("test labels: ",test_set.get_labels())
-
     convolutional_network = resnet18(pretrained=True)
     convolutional_network.fc = nn.Flatten()
     model = PrototypicalNetworks(convolutional_network)
@@ -105,7 +109,7 @@ if __name__ == "__main__":
 
 
     N_WAY = 5  # Number of classes in a task
-    N_SHOT = 5  # Number of images per class in the support set
+    N_SHOT =5  # Number of images per class in the support set
     N_QUERY = 10  # Number of images per class in the query set
     N_EVALUATION_TASKS = 100
 
@@ -124,22 +128,18 @@ if __name__ == "__main__":
     model.eval()
     pred, true = get_data(test_loader)
 
-    print(pred,true)
-
-    # from sklearn.metrics import confusion_matrix
-    # import pandas as pd
-    # import  numpy as np
-    # import matplotlib.pyplot as plt
-    # import seaborn as sn
-
-    # # generate confusion matrix
-    # classes = ('buildings', 'chaparral', 'denseresidential', 'intersection', 'mediumresidential',
-    #     'mobilehomepark', 'sparseresidential', 'storagetanks', 'tenniscourt')
+    # generate confusion matrix
+    classes = ('buildings', 'chaparral', 'denseresidential', 'intersection', 'mediumresidential',
+        'mobilehomepark', 'sparseresidential', 'storagetanks', 'tenniscourt')
     
-    # cf_matrix = confusion_matrix(true,pred)
-    # df_cm = pd.DataFrame(cf_matrix / np.sum(cf_matrix, axis=1)[:, None], index = [i for i in classes],
-    #                  columns = [i for i in classes])
+    cf_matrix = confusion_matrix(true,pred)
+    df_cm = pd.DataFrame(cf_matrix / np.sum(cf_matrix, axis=1)[:, None], index = [i for i in classes],
+                     columns = [i for i in classes])
     
-    # plt.figure(figsize = (12,7))
-    # sn.heatmap(df_cm, annot=True)
-    # plt.savefig('output.png')
+    plt.figure(figsize = (12,7))
+    sn.heatmap(df_cm, annot=True)
+    plt.title("Confusion Matrix")
+    plt.xlabel("True Labels")
+    plt.ylabel("Predicted Labels")
+    plt.tight_layout()
+    plt.savefig('fewshot_confusion.png')
