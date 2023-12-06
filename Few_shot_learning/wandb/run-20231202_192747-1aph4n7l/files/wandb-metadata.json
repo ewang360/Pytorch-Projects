@@ -1,0 +1,100 @@
+{
+    "os": "Linux-5.15.133.1-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+    "python": "3.10.13",
+    "heartbeatAt": "2023-12-03T00:27:48.143488",
+    "startedAt": "2023-12-03T00:27:47.670637",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/home/eileen/Projects/Pytorch-Projects/Few_shot_learning/wandb_test.py",
+    "codePathLocal": "wandb_test.py",
+    "codePath": "Few_shot_learning/wandb_test.py",
+    "git": {
+        "remote": "git@github.com:ewang360/Pytorch-Projects.git",
+        "commit": "9c237fd9383c0160be96cb8973ed696a75902b6c"
+    },
+    "email": "elw96@pitt.edu",
+    "root": "/home/eileen/Projects/Pytorch-Projects",
+    "host": "EileenPC",
+    "username": "eileen",
+    "executable": "/home/eileen/miniconda3/envs/tiles/bin/python",
+    "cpu_count": 6,
+    "cpu_count_logical": 12,
+    "cpu_freq": {
+        "current": 3892.5860000000007,
+        "min": 0.0,
+        "max": 0.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 3892.586,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3892.586,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3892.586,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3892.586,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3892.586,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3892.586,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3892.586,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3892.586,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3892.586,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3892.586,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3892.586,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3892.586,
+            "min": 0.0,
+            "max": 0.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 1006.853931427002,
+            "used": 12.283649444580078
+        }
+    },
+    "memory": {
+        "total": 15.567523956298828
+    }
+}

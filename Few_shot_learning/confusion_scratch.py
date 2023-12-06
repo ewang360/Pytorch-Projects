@@ -1,6 +1,13 @@
 from modules.prototypical import PrototypicalNetworks
+from modules.simple_shot import SimpleShot
+from modules.finetune import Finetune
+from modules.laplacian import LaplacianShot
+from modules.tim import TIM
+from modules.transductive_finetuning import TransductiveFinetuning
+
 import torch
-from torch import nn
+import random
+import numpy as np
 from torchvision import datasets, transforms
 from fewshot_sampler import FewShotSampler
 from torch.utils.data import DataLoader
@@ -8,6 +15,15 @@ from tqdm import tqdm
 from pathlib import Path
 from wrap_few_shot_dataset import WrapFewShotDataset
 from modules.predefined_resnet import resnet12
+
+DEVICE = "cpu"
+
+random_seed = 0
+np.random.seed(random_seed)
+torch.manual_seed(random_seed)
+random.seed(random_seed)
+torch.backends.cudnn.deterministic = True
+torch.backends.cudnn.benchmark = False
 
 def eval_one_task(
     model,
@@ -45,8 +61,6 @@ def get_data(data_loader: DataLoader):
     pred = []
     true = []
 
-    device = "cuda"
-
     # eval mode affects the behaviour of some layers (such as batch normalization or dropout)
     # no_grad() tells torch not to keep in memory the whole computational graph (it's more lightweight this way)
     model.eval()
@@ -66,10 +80,10 @@ def get_data(data_loader: DataLoader):
             ) in tqdm_eval:
                 correct, total = eval_one_task(
                     model,
-                    support_images.to(device),
-                    support_labels.to(device),
-                    query_images.to(device),
-                    query_labels.to(device),
+                    support_images.to(DEVICE),
+                    support_labels.to(DEVICE),
+                    query_images.to(DEVICE),
+                    query_labels.to(DEVICE),
                     class_ids,
                 )
 
@@ -123,15 +137,13 @@ if __name__ == "__main__":
     test_set = WrapFewShotDataset(test_set)
 
     # load model
-    DEVICE = "cpu"
-
     model = resnet12(
         use_fc=True,
         num_classes=len(set(train_set.get_labels())),
     ).to(DEVICE)
 
     model.load_state_dict(torch.load("models/fewshot_merced_simple_scratch_2000_res.pth",map_location=torch.device(DEVICE)))
-    model = PrototypicalNetworks(model).to(DEVICE)
+    model = TransductiveFinetuning(model).to(DEVICE)
     # model.load_state_dict(torch.load("models/fewshot_merced_proto_scratch.pth",map_location=torch.device(DEVICE)))
 
 
@@ -173,4 +185,4 @@ if __name__ == "__main__":
     
     plt.figure(figsize = (12,7))
     sn.heatmap(df_cm, annot=True)
-    plt.savefig('proto_mat.png')
+    plt.savefig('trans_fine_mat.png')
