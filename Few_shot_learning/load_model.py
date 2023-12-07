@@ -1,4 +1,4 @@
-from src.Prototypical_networks import PrototypicalNetworks
+from modules.episodic_prototypical import PrototypicalNetworks
 import torch
 from torch import nn
 from torchvision import datasets, transforms
@@ -64,7 +64,7 @@ if __name__ == "__main__":
 
     # Setup path to data folder
     data_path = Path("data")
-    image_path = data_path / "UCMerced-Test"
+    image_path = data_path / "EuroSAT"
 
     # Check if image folder exists
     if image_path.is_dir():
@@ -95,8 +95,8 @@ if __name__ == "__main__":
     model.load_state_dict(torch.load("models/fewshot_merced_proto.pth",map_location=torch.device('cpu')))
 
 
-    N_WAY = 5  # Number of classes in a task
-    N_SHOT = 5  # Number of images per class in the support set
+    N_WAY = 3  # Number of classes in a task
+    N_SHOT = 1  # Number of images per class in the support set
     N_QUERY = 10  # Number of images per class in the query set
     N_EVALUATION_TASKS = 100
 

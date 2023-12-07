@@ -70,7 +70,6 @@ def get_data(data_loader: DataLoader):
 
     return pred, true
 
-
 if __name__ == "__main__":
 
     image_size = 28
@@ -109,7 +108,7 @@ if __name__ == "__main__":
 
 
     N_WAY = 5  # Number of classes in a task
-    N_SHOT =5  # Number of images per class in the support set
+    N_SHOT = 5  # Number of images per class in the support set
     N_QUERY = 10  # Number of images per class in the query set
     N_EVALUATION_TASKS = 100
 
@@ -131,15 +130,16 @@ if __name__ == "__main__":
     # generate confusion matrix
     classes = ('buildings', 'chaparral', 'denseresidential', 'intersection', 'mediumresidential',
         'mobilehomepark', 'sparseresidential', 'storagetanks', 'tenniscourt')
+    # classes = ('AnnualCrop','Forest','HerbaceousVegetation','Highway','Industrial','Pasture','PermanentCrop','Residential','River','SeaLake')
     
     cf_matrix = confusion_matrix(true,pred)
     df_cm = pd.DataFrame(cf_matrix / np.sum(cf_matrix, axis=1)[:, None], index = [i for i in classes],
                      columns = [i for i in classes])
     
-    plt.figure(figsize = (12,7))
+    plt.figure(figsize = (12,7), dpi=2000)
     sn.heatmap(df_cm, annot=True)
-    plt.title("Confusion Matrix")
-    plt.xlabel("True Labels")
-    plt.ylabel("Predicted Labels")
+    plt.title("UCMerced Confusion Matrix")
+    plt.xlabel("Predicted Labels")
+    plt.ylabel("True Labels")
     plt.tight_layout()
-    plt.savefig('fewshot_confusion.png')
+    plt.savefig('confusion_matrices/UCMerced_test_5shot.png')
