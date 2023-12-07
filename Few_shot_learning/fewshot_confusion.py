@@ -2,7 +2,7 @@ from modules.episodic_prototypical import PrototypicalNetworks
 import torch
 from torch import nn
 from torchvision import datasets, transforms
-from torchvision.models import resnet18
+from torchvision.models import resnet18, resnet50
 from fewshot_sampler import FewShotSampler
 from torch.utils.data import DataLoader
 from tqdm import tqdm

@@ -2,7 +2,7 @@ from modules.episodic_prototypical import PrototypicalNetworks
 import torch
 from torch import nn
 from torchvision import datasets, transforms
-from torchvision.models import resnet18
+from torchvision.models import resnet18, resnet50
 from fewshot_sampler import FewShotSampler
 from torch.utils.data import DataLoader
 from tqdm import tqdm
@@ -64,7 +64,7 @@ if __name__ == "__main__":
 
     # Setup path to data folder
     data_path = Path("data")
-    image_path = data_path / "EuroSAT"
+    image_path = data_path / "UCMerced-Fewshot"
 
     # Check if image folder exists
     if image_path.is_dir():
@@ -92,11 +92,11 @@ if __name__ == "__main__":
     convolutional_network = resnet18(pretrained=True)
     convolutional_network.fc = nn.Flatten()
     model = PrototypicalNetworks(convolutional_network)
-    model.load_state_dict(torch.load("models/fewshot_merced_proto.pth",map_location=torch.device('cpu')))
+    model.load_state_dict(torch.load("models/fewshot_merced_proto_res18_corrected.pth",map_location=torch.device('cuda')))
 
 
-    N_WAY = 3  # Number of classes in a task
-    N_SHOT = 1  # Number of images per class in the support set
+    N_WAY = 5  # Number of classes in a task
+    N_SHOT = 5  # Number of images per class in the support set
     N_QUERY = 10  # Number of images per class in the query set
     N_EVALUATION_TASKS = 100
 
