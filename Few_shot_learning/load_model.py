@@ -64,7 +64,7 @@ if __name__ == "__main__":
 
     # Setup path to data folder
     data_path = Path("data")
-    image_path = data_path / "UCMerced-Fewshot"
+    image_path = data_path / "UCMerced"
 
     # Check if image folder exists
     if image_path.is_dir():
@@ -74,7 +74,7 @@ if __name__ == "__main__":
         exit()
 
     # Setup train and testing paths
-    test_dir = image_path / "Test"
+    test_dir = image_path / "Test1"
 
     test_transform = transforms.Compose([
         transforms.Resize([int(image_size * 1.15), int(image_size * 1.15)]),
