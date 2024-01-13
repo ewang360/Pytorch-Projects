@@ -18,3 +18,10 @@ dense residential
 medium residential
 mobile home parkinglot
 storage tanks
+
+test2:
+denseresidential
+mediumresidential
+river
+storage tanks
+tennis court

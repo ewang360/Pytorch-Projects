@@ -9,6 +9,8 @@ from tqdm import tqdm
 from pathlib import Path
 from wrap_few_shot_dataset import WrapFewShotDataset
 
+DEVICE = 'cpu'
+
 def evaluate_on_one_task(
     support_images: torch.Tensor,
     support_labels: torch.Tensor,
@@ -64,7 +66,7 @@ if __name__ == "__main__":
 
     # Setup path to data folder
     data_path = Path("data")
-    image_path = data_path / "UCMerced"
+    image_path = data_path / "EuroSAT"
 
     # Check if image folder exists
     if image_path.is_dir():
@@ -74,7 +76,7 @@ if __name__ == "__main__":
         exit()
 
     # Setup train and testing paths
-    test_dir = image_path / "Test1"
+    test_dir = image_path / "Test"
 
     test_transform = transforms.Compose([
         transforms.Resize([int(image_size * 1.15), int(image_size * 1.15)]),
@@ -92,7 +94,7 @@ if __name__ == "__main__":
     convolutional_network = resnet18(pretrained=True)
     convolutional_network.fc = nn.Flatten()
     model = PrototypicalNetworks(convolutional_network)
-    model.load_state_dict(torch.load("models/fewshot_merced_proto_res18_corrected.pth",map_location=torch.device('cuda')))
+    model.load_state_dict(torch.load("models/fewshot_merced_proto_res18_corrected.pth",map_location=torch.device(DEVICE)))
 
 
     N_WAY = 5  # Number of classes in a task
