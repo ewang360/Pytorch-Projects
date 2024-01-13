@@ -1,0 +1,20 @@
+train:
+agricultural
+airplane
+baseball diamond
+beach
+forest
+freeway
+golfcourse
+harbor
+overpass
+parkinglot
+runway
+sparseresidential
+
+test1:
+buildings
+dense residential
+medium residential
+mobile home parkinglot
+storage tanks
